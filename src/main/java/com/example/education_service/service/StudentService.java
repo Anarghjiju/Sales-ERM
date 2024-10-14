@@ -44,21 +44,48 @@ public class StudentService {
         return sr.save(student);
     }
 
+//    public StudentEntity getAStudent(Long id) {
+//        return sr.findById(id).orElse(null);
+//    }
+
+
+
+
     public StudentEntity getAStudent(Long id) {
-        return sr.findById(id).orElse(null);
+        return jpaStreamer.stream(StudentEntity.class)
+                .filter(studentEntity -> studentEntity.getId().equals(id))
+                .findFirst()
+                .orElse(null);
     }
 
+
+
+//    public List<StudentEntity> getAllStudents() {
+//        return sr.findAll();
+//    }
+//
+//    public Map<String, List<StudentEntity>> groupByGender() {
+//        return sr.findAll().stream()
+//                .collect(Collectors.groupingBy(StudentEntity::getGender));
+//    }
+//
+//    public Map<String, List<StudentEntity>> groupByScholarshipYesNo() {
+//        return sr.findAll().stream()
+//                .collect(Collectors.groupingBy(student -> "Yes".equalsIgnoreCase(student.getScholarship()) ? "Yes" : "No"));
+//    }
+
     public List<StudentEntity> getAllStudents() {
-        return sr.findAll();
+        return jpaStreamer.stream(StudentEntity.class)
+                .collect(Collectors.toList());
     }
 
     public Map<String, List<StudentEntity>> groupByGender() {
-        return sr.findAll().stream()
+        return jpaStreamer.stream(StudentEntity.class)
                 .collect(Collectors.groupingBy(StudentEntity::getGender));
     }
 
     public Map<String, List<StudentEntity>> groupByScholarshipYesNo() {
-        return sr.findAll().stream()
+        return jpaStreamer.stream(StudentEntity.class)
                 .collect(Collectors.groupingBy(student -> "Yes".equalsIgnoreCase(student.getScholarship()) ? "Yes" : "No"));
     }
 
